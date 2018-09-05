@@ -1,19 +1,23 @@
 import ftplib
 import os
 
-#данный метод принимает три параметра:
+
+# данный метод принимает три параметра:
 # 1) ftp-сервер (в данном примере используется ftp-сервер запущенный локально)
 # 2) имя файла, который необходимо загрузить с сервера
 # 3) путь на локальной машине, куда будет записан файл, загружаемый с сервера
 def download_file(ftp_server, filename, savepath):
     try:
-        ftp_server.retrbinary('RETR ' + filename, open(savepath, 'wb').write)
+        local = open(savepath, 'wb')
+        ftp_server.retrbinary('RETR ' + filename, local.write, 1024)
+        local.close()
         return True
     except:
         print("Something's gone wrong. Download failed.")
         return False
 
-#данный метод принимает два параметра:
+
+# данный метод принимает два параметра:
 # 1) ftp-сервер (в данном примере используется ftp-сервер запущенный локально)
 # 2) имя файла, который необходимо выгрузить на сервер
 
@@ -52,8 +56,6 @@ if __name__ == "__main__":
     download_file(ftp, 'bf.txt', '/home/alexey2/testfold/bf.txt')
     upload_file(ftp, '/home/alexey2/testfold/bf.txt')
     uploadF(ftp, '/home/alexey2/testfold/bf.txt')
-    f = open('/home/alexey2/testfold/bf.txt', "rb")
-    print(f)
 
 
 
